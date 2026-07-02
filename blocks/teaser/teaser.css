@@ -182,13 +182,13 @@
   min-height: 320px;
 }
 
-@media (min-width: 600px) {
+@media (width >= 600px) {
   .teaser .teaser-content {
     padding: 40px;
   }
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .teaser {
     gap: 48px;
   }
