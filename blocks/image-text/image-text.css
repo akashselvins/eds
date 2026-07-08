@@ -1,0 +1,17 @@
+.image-text {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.image-text img {
+    width: 400px;
+}
+
+.image-text h2 {
+    color: #333;
+}
+
+.image-text p {
+    line-height: 1.6;
+}
