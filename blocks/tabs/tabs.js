@@ -2,8 +2,7 @@ export default function decorate(block) {
   const links = [...block.querySelectorAll('a')];
 
   links.forEach((link) => {
-    const targetId = link.getAttribute('href').replace('#', '');
-    const wrapper = link.closest('div'); // the column cell
+    const wrapper = link.closest(':scope > div, div'); // the row itself
     wrapper.classList.add('tab-item');
 
     link.addEventListener('click', () => {
@@ -11,7 +10,6 @@ export default function decorate(block) {
     });
   });
 
-  // Highlight tab matching the section currently in view
   const sections = links
     .map((l) => document.getElementById(l.getAttribute('href').replace('#', '')))
     .filter(Boolean);
@@ -28,7 +26,7 @@ export default function decorate(block) {
           }
         });
       },
-      { rootMargin: '-40% 0px -50% 0px' }, // triggers when section is roughly centered
+      { rootMargin: '-40% 0px -50% 0px' },
     );
     sections.forEach((s) => observer.observe(s));
   }
@@ -38,6 +36,5 @@ export default function decorate(block) {
     activeWrapper.classList.add('active');
   }
 
-  // set first tab active by default
   if (links.length) links[0].closest('div').classList.add('active');
 }

@@ -1,65 +1,22 @@
-/* reset default block styling first */
-.tabs,
-.tabs * {
-  box-sizing: border-box;
-}
-
 .tabs {
+  display: flex;
+  flex-direction: row;
   background-color: #cfe2f3;
   border-top: 2px solid #000;
   border-bottom: 1px solid #000;
-  width: 100%;
 }
 
-/* the block's row wrapper — force horizontal flex, override any default block/table display */
-.tabs > div {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* each tab cell */
 .tabs > div > div {
-  position: relative;
-  display: flex;
-  align-items: center;
   padding: 22px 28px;
-  cursor: pointer;
-  flex: 0 0 auto;
-  border: none;
-  background: transparent;
 }
 
-/* remove any inherited table cell borders */
-.tabs > div > div,
-.tabs > div > div > p {
-  border: none;
-  margin: 0;
-}
-
-/* vertical divider between tabs, skip first */
-.tabs > div > div:not(:first-child)::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 20%;
-  height: 60%;
-  border-left: 1px solid #444;
-}
-
-.tabs a {
+.tabs a,
+.tabs p {
   text-decoration: none;
   color: #1a1a1a;
   font-size: 19px;
   font-weight: 500;
-  white-space: nowrap;
-}
-
-.tabs > div > div:hover a {
-  color: #b3261e;
+  margin: 0;
 }
 
 .tabs > div > div.active {
@@ -69,23 +26,4 @@
 .tabs > div > div.active a {
   color: #b3261e;
   font-weight: 700;
-}
-
-.tabs > div > div.active::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 3px;
-  background-color: #b3261e;
-}
-
-@media (max-width: 600px) {
-  .tabs > div {
-    flex-wrap: wrap;
-  }
-  .tabs > div > div {
-    padding: 14px 16px;
-  }
 }
