@@ -1,0 +1,60 @@
+.tabs {
+  background-color: #cfe2f3; /* light blue bar */
+  border-bottom: 1px solid #000;
+}
+
+.tabs > div {
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* each column becomes one tab item */
+.tabs > div > div {
+  position: relative;
+  padding: 20px 24px;
+}
+
+/* vertical divider between tabs, skip first */
+.tabs > div > div:not(:first-child)::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  border-left: 1px solid #7a9cc6;
+}
+
+.tabs a {
+  text-decoration: none;
+  color: #1a1a1a;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.tabs a:hover {
+  color: #b3261e;
+}
+
+/* active tab state (JS adds this class) */
+.tabs > div > div.active {
+  background-color: #f2f2f2;
+}
+
+.tabs > div > div.active a {
+  color: #b3261e;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .tabs > div {
+    flex-wrap: wrap;
+    padding: 0 12px;
+  }
+  .tabs > div > div {
+    padding: 14px 12px;
+  }
+}

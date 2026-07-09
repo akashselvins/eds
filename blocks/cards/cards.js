@@ -1,66 +1,86 @@
-import { createOptimizedPicture } from '../../scripts/aem.js';
-
 export default function decorate(block) {
-  // Build a semantic list of cards with clearer classes and accessibility
-  const ul = document.createElement('ul');
-  ul.className = 'cards';
-
-  [...block.children].forEach((row) => {
-    const li = document.createElement('li');
-    li.className = 'cards-item';
-
-    // move children from the original row into the list item
-    while (row.firstElementChild) li.append(row.firstElementChild);
-
-    // normalize card children: image wrapper vs body wrapper
-    [...li.children].forEach((div) => {
-      if (div.children.length === 1 && div.querySelector('picture')) {
-        div.className = 'cards-card-image';
-
-        // ensure image is wrapped in a figure for semantics
-        const pic = div.querySelector('picture');
-        if (pic) {
-          const figure = document.createElement('figure');
-          figure.className = 'cards-figure';
-          pic.replaceWith(figure);
-          figure.append(pic);
-        }
-      } else {
-        div.className = 'cards-card-body';
-
-        // promote the first paragraph/strong to a heading if appropriate
-        const heading = div.querySelector('h1,h2,h3,h4,h5,h6');
-        if (heading) {
-          heading.classList.add('cards-title');
-        } else {
-          const strong = div.querySelector('strong,b');
-          if (strong) {
-            const h = document.createElement('h3');
-            h.className = 'cards-title';
-            h.innerHTML = strong.innerHTML;
-            strong.replaceWith(h);
-          } else {
-            const p = div.querySelector('p');
-            if (p) {
-              const h = document.createElement('h3');
-              h.className = 'cards-title';
-              h.innerHTML = p.innerHTML;
-              div.replaceChild(h, p);
-            }
-          }
-        }
-      }
-    });
-
-    ul.append(li);
+  const row = block.querySelector(':scope > div');
+  if (!row) return;
+ 
+  const cells = [...row.children];
+  const [textCell, imageCell] = cells;
+ 
+  // ── Image side ─────────────────────────────────────────────
+  const mediaWrap = document.createElement('div');
+  mediaWrap.className = 'cards-media';
+ 
+  const picture = imageCell?.querySelector('picture');
+  if (picture) {
+    const img = picture.querySelector('img');
+    if (img) {
+      img.setAttribute('loading', 'lazy');
+      img.removeAttribute('width');
+      img.removeAttribute('height');
+    }
+    mediaWrap.append(picture);
+  }
+ 
+  // ── Text side ──────────────────────────────────────────────
+  const textWrap = document.createElement('div');
+  textWrap.className = 'cards-text';
+ 
+  let headingEl = null;
+  const lines = [...textCell.children].filter((el) => el.textContent.trim());
+ 
+  lines.forEach((el, index) => {
+    const link = el.querySelector('a');
+ 
+    if (index === 0 && !link) {
+      const heading = document.createElement('h2');
+      heading.className = 'cards-heading';
+      heading.textContent = el.textContent.trim();
+      textWrap.append(heading);
+      headingEl = heading;
+ 
+      // Mobile inline divider — visible only on mobile via CSS
+      const mobileDivider = document.createElement('div');
+      mobileDivider.className = 'cards-divider-mobile';
+      textWrap.append(mobileDivider);
+      return;
+    }
+ 
+    if (link) {
+      const cta = document.createElement('a');
+      cta.className = 'cards-cta';
+      cta.href = link.href;
+      cta.textContent = link.textContent.trim();
+      textWrap.append(cta);
+      return;
+    }
+ 
+    const desc = document.createElement('p');
+    desc.className = 'cards-description';
+    desc.textContent = el.textContent.trim();
+    textWrap.append(desc);
   });
-
-  // Replace images with optimized pictures
-  ul.querySelectorAll('picture > img').forEach((img) => {
-    const optimized = createOptimizedPicture(img.src, img.alt || '', false, [{ width: '750' }]);
-    const pic = img.closest('picture');
-    if (pic) pic.replaceWith(optimized);
-  });
-
-  block.replaceChildren(ul);
+ 
+  // ── Desktop full-width divider (block level) ───────────────
+  const desktopDivider = document.createElement('div');
+  desktopDivider.className = 'cards-divider';
+ 
+  // ── Rebuild — image FIRST in DOM ───────────────────────────
+  // Mobile  (flex-direction: column)      → image top, text bottom
+  // Desktop (flex-direction: row-reverse) → text left, image right
+  const inner = document.createElement('div');
+  inner.className = 'cards-inner';
+  inner.append(mediaWrap, textWrap); // image first
+ 
+  block.textContent = '';
+  block.append(inner, desktopDivider);
+ 
+  // Position desktop divider below heading
+  const positionDivider = () => {
+    if (!headingEl || window.innerWidth <= 768) return;
+    const blockTop      = block.getBoundingClientRect().top + window.scrollY;
+    const headingBottom = headingEl.getBoundingClientRect().bottom + window.scrollY;
+    desktopDivider.style.top = `${headingBottom - blockTop + 8}px`;
+  };
+ 
+  requestAnimationFrame(positionDivider);
+  window.addEventListener('resize', positionDivider);
 }
