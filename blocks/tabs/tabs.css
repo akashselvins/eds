@@ -1,20 +1,43 @@
-.tabs {
-  background-color: #cfe2f3; /* light blue bar */
-  border-bottom: 1px solid #000;
+/* reset default block styling first */
+.tabs,
+.tabs * {
+  box-sizing: border-box;
 }
 
+.tabs {
+  background-color: #cfe2f3;
+  border-top: 2px solid #000;
+  border-bottom: 1px solid #000;
+  width: 100%;
+}
+
+/* the block's row wrapper — force horizontal flex, override any default block/table display */
 .tabs > div {
-  display: flex;
-  align-items: center;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap;
+  align-items: stretch;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 24px;
 }
 
-/* each column becomes one tab item */
+/* each tab cell */
 .tabs > div > div {
   position: relative;
-  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  padding: 22px 28px;
+  cursor: pointer;
+  flex: 0 0 auto;
+  border: none;
+  background: transparent;
+}
+
+/* remove any inherited table cell borders */
+.tabs > div > div,
+.tabs > div > div > p {
+  border: none;
+  margin: 0;
 }
 
 /* vertical divider between tabs, skip first */
@@ -22,26 +45,25 @@
   content: '';
   position: absolute;
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 20%;
   height: 60%;
-  border-left: 1px solid #7a9cc6;
+  border-left: 1px solid #444;
 }
 
 .tabs a {
   text-decoration: none;
   color: #1a1a1a;
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
-.tabs a:hover {
+.tabs > div > div:hover a {
   color: #b3261e;
 }
 
-/* active tab state (JS adds this class) */
 .tabs > div > div.active {
-  background-color: #f2f2f2;
+  background-color: #e6e6e6;
 }
 
 .tabs > div > div.active a {
@@ -49,12 +71,21 @@
   font-weight: 700;
 }
 
+.tabs > div > div.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  background-color: #b3261e;
+}
+
 @media (max-width: 600px) {
   .tabs > div {
     flex-wrap: wrap;
-    padding: 0 12px;
   }
   .tabs > div > div {
-    padding: 14px 12px;
+    padding: 14px 16px;
   }
 }
