@@ -3,7 +3,6 @@
   box-sizing: border-box;
 }
 
-/* keep this block's own wrapper from clipping sticky behavior */
 .tabs-wrapper {
   overflow: visible !important;
 }
@@ -14,10 +13,24 @@
   background-color: #cfe2f3;
   border-top: 2px solid #000;
   border-bottom: 1px solid #000;
-  position: sticky;
-  top: 0;
+  width: 100%;
   z-index: 100;
-  overflow: visible;
+}
+
+/* applied by JS once the block scrolls past the top of the viewport */
+.tabs.is-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+/* placeholder to prevent page content jump when .tabs becomes fixed */
+.tabs-placeholder {
+  display: none;
+}
+
+.tabs-placeholder.is-active {
+  display: block;
 }
 
 .tabs > div > div {
