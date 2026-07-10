@@ -1,5 +1,6 @@
 export default function decorate(block) {
   const links = [...block.querySelectorAll('a')];
+  const isInEditor = window.self !== window.top;
 
   links.forEach((link) => {
     const wrapper = link.closest(':scope > div, div');
@@ -7,78 +8,125 @@ export default function decorate(block) {
 
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      setActive(wrapper);
+
       const targetId = link.getAttribute('href').replace('#', '');
-      const targetEl = document.getElementById(targetId);
-      if (targetEl) {
-        const tabsHeight = block.offsetHeight;
-        const top = targetEl.getBoundingClientRect().top + window.scrollY - tabsHeight;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
+      const target = document.getElementById(targetId);
+
+      if (!target) return;
+
+      const offset = block.classList.contains('is-fixed')
+        ? block.offsetHeight
+        : 0;
+
+      window.scrollTo({
+        top: target.getBoundingClientRect().top + window.scrollY - offset,
+        behavior: 'smooth',
+      });
     });
   });
 
   const sections = links
-    .map((l) => ({
-      id: l.getAttribute('href').replace('#', ''),
-      el: document.getElementById(l.getAttribute('href').replace('#', '')),
-      link: l,
+    .map((link) => ({
+      wrapper: link.closest('.tab-item'),
+      section: document.getElementById(link.getAttribute('href').replace('#', '')),
     }))
-    .filter((s) => s.el);
+    .filter((item) => item.section);
 
-  function setActive(activeWrapper) {
-    block.querySelectorAll('.tab-item').forEach((el) => el.classList.remove('active'));
-    activeWrapper.classList.add('active');
+  function setActive(wrapper) {
+    block.querySelectorAll('.tab-item').forEach((tab) => {
+      tab.classList.remove('active');
+    });
+
+    if (wrapper) wrapper.classList.add('active');
   }
 
-  function updateActiveOnScroll() {
-    const tabsHeight = block.offsetHeight;
-    const scrollPos = window.scrollY + tabsHeight + 10;
+  function updateActiveTab() {
+    const scrollPos = window.scrollY + block.offsetHeight + 20;
 
     let current = sections[0];
-    sections.forEach((s) => {
-      if (s.el.offsetTop <= scrollPos) {
-        current = s;
+
+    sections.forEach((item) => {
+      if (item.section.offsetTop <= scrollPos) {
+        current = item;
       }
     });
 
-    const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 5;
-    if (atBottom) {
+    if (
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 5
+    ) {
       current = sections[sections.length - 1];
     }
 
     if (current) {
-      setActive(current.link.closest('div'));
+      setActive(current.wrapper);
     }
   }
 
+  if (isInEditor) {
+    updateActiveTab();
+    return;
+  }
+
+  // Placeholder
   const placeholder = document.createElement('div');
   placeholder.className = 'texttab-placeholder';
   block.parentNode.insertBefore(placeholder, block);
 
-  const originalOffsetTop = block.getBoundingClientRect().top + window.scrollY;
+  let start = 0;
+  let end = Number.MAX_SAFE_INTEGER;
 
-  function updateFixedState() {
-    const tabsHeight = block.offsetHeight;
-    if (window.scrollY >= originalOffsetTop) {
+  function calculateBounds() {
+    start = block.getBoundingClientRect().top + window.scrollY;
+
+    const lastSection = sections[sections.length - 1]?.section;
+
+    if (lastSection) {
+      const rect = lastSection.getBoundingClientRect();
+
+      end = rect.bottom + window.scrollY - block.offsetHeight;
+    }
+
+    updateSticky();
+  }
+
+  function updateSticky() {
+    const h = block.offsetHeight;
+
+    if (window.scrollY >= start && window.scrollY <= end) {
       block.classList.add('is-fixed');
-      block.style.width = `${block.parentNode.offsetWidth}px`;
-      placeholder.style.height = `${tabsHeight}px`;
       placeholder.classList.add('is-active');
+      placeholder.style.height = `${h}px`;
     } else {
       block.classList.remove('is-fixed');
-      block.style.width = '';
       placeholder.classList.remove('is-active');
+      placeholder.style.height = '';
     }
   }
 
-  window.addEventListener('scroll', () => {
-    updateFixedState();
-    updateActiveOnScroll();
-  }, { passive: true });
+  function onScroll() {
+    updateSticky();
+    updateActiveTab();
+  }
 
-  window.addEventListener('resize', updateFixedState);
+  // Wait until everything (including images) has loaded
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      calculateBounds();
+      onScroll();
+    }, 200);
+  });
 
-  updateFixedState();
-  updateActiveOnScroll();
+  window.addEventListener('resize', () => {
+    calculateBounds();
+    onScroll();
+  });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Initial calculation
+  setTimeout(() => {
+    calculateBounds();
+    onScroll();
+  }, 200);
 }

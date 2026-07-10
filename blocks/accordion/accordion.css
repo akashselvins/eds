@@ -76,3 +76,15 @@
     padding-left: calc(0.5em + 20px + 28px);
   }
 }
+.section.faq-section {
+  position: relative;
+  margin-top: 0 !important;
+  clear: both;
+  overflow: visible;
+}
+
+.section.faq-section h2:first-child {
+  position: static !important;
+  margin-top: 0 !important;
+  transform: none !important;
+}

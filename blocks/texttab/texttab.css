@@ -15,12 +15,19 @@
   border-bottom: 1px solid #000;
   width: 100%;
   z-index: 100;
+  transition: box-shadow 0.2s ease;
 }
 
+/* Applied by JS */
 .texttab.is-fixed {
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #cfe2f3;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
 }
 
 .texttab-placeholder {
@@ -63,7 +70,24 @@
   .texttab {
     flex-wrap: wrap;
   }
+
   .texttab > div > div {
     padding: 14px 16px;
   }
+}
+.texttab.is-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.texttab-placeholder {
+  display: none;
+}
+
+.texttab-placeholder.is-active {
+  display: block;
 }
