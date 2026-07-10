@@ -1,17 +1,17 @@
 export default function decorate(block) {
-  const cols = [...block.firstElementChild.children];
-  block.classList.add(`columns-${cols.length}-cols`);
-
-  // setup image columns
   [...block.children].forEach((row) => {
     [...row.children].forEach((col) => {
+      // tag column containing an image
       const pic = col.querySelector('picture');
       if (pic) {
-        const picWrapper = pic.closest('div');
-        if (picWrapper && picWrapper.children.length === 1) {
-          // picture is only content in column
-          picWrapper.classList.add('columns-img-col');
-        }
+        col.classList.add('columns-img-col');
+      }
+
+      // tag the last paragraph if it contains a link (CTA)
+      const paragraphs = col.querySelectorAll('p');
+      const lastPara = paragraphs[paragraphs.length - 1];
+      if (lastPara && lastPara.querySelector('a')) {
+        lastPara.classList.add('columns-cta');
       }
     });
   });

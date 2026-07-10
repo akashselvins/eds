@@ -1,34 +1,86 @@
+.columns,
+.columns * {
+  box-sizing: border-box;
+}
+
 .columns > div {
   display: flex;
-  flex-direction: column;
-  background-color: var(--columns-background, var(--background-color));
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 24px 60px;
 }
 
+/* each column */
+.columns > div > div {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* image inside each column */
+.columns picture,
 .columns img {
   width: 100%;
-}
-
-.columns > div > div {
-  order: 1;
-}
-
-.columns > div > .columns-img-col {
-  order: 0;
-}
-
-.columns > div > .columns-img-col img {
+  height: 220px;
+  object-fit: cover;
   display: block;
+  margin-bottom: 20px;
 }
 
-@media (width >= 900px) {
-  .columns > div {
-    align-items: center;
-    flex-direction: unset;
-    gap: 24px;
-  }
+/* heading e.g. "Clarifying Your Specific Needs" */
+.columns h3,
+.columns strong {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 12px;
+}
 
-  .columns > div > div {
-    flex: 1;
-    order: unset;
+/* body paragraph */
+.columns p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  margin: 0 0 16px;
+}
+
+/* CTA link e.g. "ASSESS YOUR NEEDS >" */
+.columns-cta a,
+.columns a {
+  color: #b3261e;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-top: auto;
+}
+
+.columns a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .columns > div {
+    flex-direction: column;
+    gap: 32px;
   }
+}
+
+/* section background wrapping this block */
+.section.light-blue {
+  background-color: #cfe2f3;
+  padding: 60px 0;
+}
+
+.section.light-blue h2 {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 30px;
+  font-size: 30px;
+  font-weight: 700;
+  color: #1a1a1a;
 }
