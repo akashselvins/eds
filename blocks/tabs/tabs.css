@@ -3,6 +3,11 @@
   box-sizing: border-box;
 }
 
+/* keep this block's own wrapper from clipping sticky behavior */
+.tabs-wrapper {
+  overflow: visible !important;
+}
+
 .tabs {
   display: flex;
   flex-direction: row;
@@ -12,6 +17,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  overflow: visible;
 }
 
 .tabs > div > div {

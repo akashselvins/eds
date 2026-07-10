@@ -2,39 +2,58 @@ export default function decorate(block) {
   const links = [...block.querySelectorAll('a')];
 
   links.forEach((link) => {
-    const wrapper = link.closest(':scope > div, div'); // the row itself
+    const wrapper = link.closest(':scope > div, div');
     wrapper.classList.add('tab-item');
 
-    link.addEventListener('click', () => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
       setActive(wrapper);
+      const targetId = link.getAttribute('href').replace('#', '');
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        const tabsHeight = block.offsetHeight;
+        const top = targetEl.getBoundingClientRect().top + window.scrollY - tabsHeight;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
     });
   });
 
   const sections = links
-    .map((l) => document.getElementById(l.getAttribute('href').replace('#', '')))
-    .filter(Boolean);
-
-  if (sections.length) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const match = links.find(
-              (l) => l.getAttribute('href') === `#${entry.target.id}`,
-            );
-            if (match) setActive(match.closest('div'));
-          }
-        });
-      },
-      { rootMargin: '-40% 0px -50% 0px' },
-    );
-    sections.forEach((s) => observer.observe(s));
-  }
+    .map((l) => ({
+      id: l.getAttribute('href').replace('#', ''),
+      el: document.getElementById(l.getAttribute('href').replace('#', '')),
+      link: l,
+    }))
+    .filter((s) => s.el);
 
   function setActive(activeWrapper) {
     block.querySelectorAll('.tab-item').forEach((el) => el.classList.remove('active'));
     activeWrapper.classList.add('active');
   }
 
-  if (links.length) links[0].closest('div').classList.add('active');
+  function updateActiveOnScroll() {
+    const tabsHeight = block.offsetHeight;
+    const scrollPos = window.scrollY + tabsHeight + 10;
+
+    let current = sections[0];
+    sections.forEach((s) => {
+      if (s.el.offsetTop <= scrollPos) {
+        current = s;
+      }
+    });
+
+    const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 5;
+    if (atBottom) {
+      current = sections[sections.length - 1];
+    }
+
+    if (current) {
+      setActive(current.link.closest('div'));
+    }
+  }
+
+  window.addEventListener('scroll', updateActiveOnScroll, { passive: true });
+  window.addEventListener('resize', updateActiveOnScroll);
+
+  updateActiveOnScroll();
 }
