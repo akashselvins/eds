@@ -1,0 +1,69 @@
+.texttab,
+.texttab * {
+  box-sizing: border-box;
+}
+
+.texttab-wrapper {
+  overflow: visible !important;
+}
+
+.texttab {
+  display: flex;
+  flex-direction: row;
+  background-color: #cfe2f3;
+  border-top: 2px solid #000;
+  border-bottom: 1px solid #000;
+  width: 100%;
+  z-index: 100;
+}
+
+.texttab.is-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.texttab-placeholder {
+  display: none;
+}
+
+.texttab-placeholder.is-active {
+  display: block;
+}
+
+.texttab > div > div {
+  padding: 22px 28px;
+  cursor: pointer;
+}
+
+.texttab a,
+.texttab p {
+  text-decoration: none;
+  color: #1a1a1a;
+  font-size: 19px;
+  font-weight: 500;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.texttab > div > div:hover a {
+  color: #b3261e;
+}
+
+.texttab > div > div.active {
+  background-color: #e6e6e6;
+}
+
+.texttab > div > div.active a {
+  color: #b3261e;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .texttab {
+    flex-wrap: wrap;
+  }
+  .texttab > div > div {
+    padding: 14px 16px;
+  }
+}
