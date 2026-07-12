@@ -10,15 +10,14 @@
 .texttab {
   display: flex;
   flex-direction: row;
-  background-color: #cfe2f3;
-  border-top: 2px solid #000;
-  border-bottom: 1px solid #000;
+  align-items: center;
   width: 100%;
+  background: #cfe2f3;
+  border: none;
   z-index: 100;
   transition: box-shadow 0.2s ease;
 }
 
-/* Applied by JS */
 .texttab.is-fixed {
   position: fixed;
   top: 0;
@@ -26,8 +25,8 @@
   right: 0;
   width: 100%;
   z-index: 1000;
-  background-color: #cfe2f3;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+  background: #cfe2f3;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 12%);
 }
 
 .texttab-placeholder {
@@ -38,19 +37,33 @@
   display: block;
 }
 
+.texttab > div {
+  flex: 0 0 auto;
+}
+
 .texttab > div > div {
-  padding: 22px 28px;
+  padding: 18px 22px;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .2s ease;
 }
 
 .texttab a,
 .texttab p {
-  text-decoration: none;
-  color: #1a1a1a;
-  font-size: 19px;
-  font-weight: 500;
   margin: 0;
+  padding: 0;
+  text-decoration: none;
+  color: #202124;
+  font-size: 18px;
+  font-weight: 500;
   white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.texttab > div > div:hover {
+  background: transparent;
 }
 
 .texttab > div > div:hover a {
@@ -58,36 +71,64 @@
 }
 
 .texttab > div > div.active {
-  background-color: #e6e6e6;
+  background: #ececec;
 }
 
 .texttab > div > div.active a {
   color: #b3261e;
   font-weight: 700;
 }
+@media (max-width: 768px) {
 
-@media (max-width: 600px) {
   .texttab {
-    flex-wrap: wrap;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    white-space: nowrap;
+    justify-content: flex-start;
+
+    /* Mobile background */
+    background: #fff;
+  }
+
+  .texttab::-webkit-scrollbar {
+    display: none;
+  }
+
+  .texttab > div {
+    flex: 0 0 auto;
+    min-width: 170px;
+    scroll-snap-align: start;
+    background: transparent;
   }
 
   .texttab > div > div {
-    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 170px;
+    padding: 14px 20px;
+    background: transparent;
   }
-}
-.texttab.is-fixed {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 1000;
-}
 
-.texttab-placeholder {
-  display: none;
-}
+  .texttab > div > div.active {
+    background: #e6e6e6;
+  }
 
-.texttab-placeholder.is-active {
-  display: block;
+  .texttab a,
+  .texttab p {
+    font-size: 16px;
+    white-space: nowrap;
+    color: #202124;
+  }
+
+  .texttab > div > div.active a {
+    color: #202124;
+    font-weight: 700;
+  }
 }

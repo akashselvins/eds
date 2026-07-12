@@ -25,6 +25,7 @@ export default function decorate(block) {
     });
   });
 
+  
   const sections = links
     .map((link) => ({
       wrapper: link.closest('.tab-item'),
@@ -33,11 +34,22 @@ export default function decorate(block) {
     .filter((item) => item.section);
 
   function setActive(wrapper) {
-    block.querySelectorAll('.tab-item').forEach((tab) => {
-      tab.classList.remove('active');
-    });
+  block.querySelectorAll('.tab-item').forEach((tab) => {
+    tab.classList.remove('active');
+  });
 
-    if (wrapper) wrapper.classList.add('active');
+  if (wrapper) {
+    wrapper.classList.add('active');
+
+    if (window.innerWidth <= 768) {
+      wrapper.parentElement.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center',
+        block: 'nearest',
+      });
+    }
+  }
+
   }
 
   function updateActiveTab() {
