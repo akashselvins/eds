@@ -42,12 +42,14 @@ export default function decorate(block) {
     wrapper.classList.add('active');
 
     if (window.innerWidth <= 768) {
-      wrapper.parentElement.scrollIntoView({
-        behavior: 'smooth',
-        inline: 'center',
-        block: 'nearest',
-      });
-    }
+  requestAnimationFrame(() => {
+    wrapper.parentElement.scrollIntoView({
+      behavior: 'auto',
+      inline: 'nearest',
+      block: 'nearest',
+    });
+  });
+}
   }
 
   }

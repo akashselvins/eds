@@ -97,7 +97,7 @@
     -webkit-overflow-scrolling: touch;
 
     /* Remove these to prevent jumping */
-    scroll-behavior: auto;
+    scroll-snap-type: none;
     touch-action: auto;
     overscroll-behavior-x: auto;
   }
