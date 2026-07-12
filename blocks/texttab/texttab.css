@@ -82,7 +82,6 @@
 /* ==========================
    MOBILE
    ========================== */
-
 @media (max-width: 768px) {
 
   .texttab {
@@ -97,13 +96,10 @@
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
 
-    /* Smooth scrolling */
-    scroll-behavior: smooth;
-
-    /* IMPORTANT */
-    scroll-snap-type: x proximity;
-    touch-action: pan-x;
-    overscroll-behavior-x: contain;
+    /* Remove these to prevent jumping */
+    scroll-behavior: auto;
+    touch-action: auto;
+    overscroll-behavior-x: auto;
   }
 
   .texttab::-webkit-scrollbar {
@@ -111,9 +107,7 @@
   }
 
   .texttab > div {
-    flex: 0 0 auto;
-    min-width: 170px;
-    scroll-snap-align: start;
+    flex: 0 0 170px;
   }
 
   .texttab > div > div {
