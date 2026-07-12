@@ -78,6 +78,11 @@
   color: #b3261e;
   font-weight: 700;
 }
+
+/* ==========================
+   MOBILE
+   ========================== */
+
 @media (max-width: 768px) {
 
   .texttab {
@@ -85,15 +90,20 @@
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
     white-space: nowrap;
-    justify-content: flex-start;
 
-    /* Mobile background */
     background: #fff;
+
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+
+    /* Smooth scrolling */
+    scroll-behavior: smooth;
+
+    /* IMPORTANT */
+    scroll-snap-type: x proximity;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
   }
 
   .texttab::-webkit-scrollbar {
@@ -104,7 +114,6 @@
     flex: 0 0 auto;
     min-width: 170px;
     scroll-snap-align: start;
-    background: transparent;
   }
 
   .texttab > div > div {
