@@ -1,0 +1,39 @@
+/* Hide all mega menu sections */
+.mega-panel {
+  display: none;
+  position: absolute;
+  top: 64px; /* Height of your navbar */
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid #d9d9d9;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  z-index: 99;
+}
+
+/* Open panel */
+.mega-panel.shop-open {
+  display: block;
+}
+
+/* Active navigation tab */
+a[href^="#"].active {
+  position: relative;
+}
+
+a[href^="#"].active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -22px;
+  height: 3px;
+  background: #eb0a1e;
+}
+
+/* Wrapper inside mega menu */
+.mega-panel .default-content-wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px;
+}
