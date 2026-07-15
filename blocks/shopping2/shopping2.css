@@ -1,40 +1,20 @@
-/* Hidden by default */
-#shopping2 {
-  display: none;
-  width: 100%;
-  background: #f5f5f5;
-  border-top: 1px solid #d9d9d9;
-  padding: 60px 0;
-  box-sizing: border-box;
-}
-
-/* Show when Shop clicked */
-#shopping2.shop-open {
-  display: block;
-}
-
-/* Main container */
 .shopping2.block {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 40px auto;
   padding: 0 48px;
 }
 
-/* 4-column grid */
-.shopping2.block > div {
+.shopping2-container > div {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 72px;
-  align-items: start;
+  gap: 64px;
 }
 
-/* Column */
-.shopping2.block > div > div {
+.shopping2-container > div > div {
   display: flex;
   flex-direction: column;
 }
 
-/* Remove bullets */
 .shopping2.block ul {
   list-style: none;
   padding: 0;
@@ -42,22 +22,20 @@
 }
 
 .shopping2.block li {
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
-/* Section headings */
 .shopping2.block h2,
 .shopping2.block h3,
 .shopping2.block p:first-child {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: #777;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
-/* Links */
 .shopping2.block a {
   color: #000;
   text-decoration: none;
@@ -69,28 +47,19 @@
   text-decoration: underline;
 }
 
-/* CTA column */
-.shopping2.block > div > div:last-child h2,
-.shopping2.block > div > div:last-child h3 {
-  font-size: 48px;
+/* CTA */
+
+.shopping2-container > div > div:last-child h2,
+.shopping2-container > div > div:last-child h3 {
+  font-size: 42px;
   font-weight: 700;
-  color: #000;
-  letter-spacing: normal;
   text-transform: none;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
-/* CTA text */
-.shopping2.block > div > div:last-child p {
-  font-size: 18px;
-  line-height: 1.8;
-  color: #4a4a4a;
-  margin-bottom: 32px;
-}
-
-/* CTA button */
-.shopping2.block .button-container {
-  margin-top: 24px;
+.shopping2-container > div > div:last-child p {
+  font-size: 17px;
+  line-height: 1.7;
 }
 
 .shopping2.block .button,
@@ -98,33 +67,22 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 14px 32px;
   background: #000;
   color: #fff;
-  text-decoration: none;
-  padding: 16px 34px;
   border-radius: 999px;
+  text-decoration: none;
   font-weight: 600;
 }
 
-/* Shop active state */
-a[href="#shopping2"].active {
-  border-bottom: 3px solid #eb0a1e;
-  padding-bottom: 8px;
-}
-
-/* Mobile */
 @media (max-width: 768px) {
-  #shopping2 {
-    padding: 32px 0;
+
+  .shopping2-container > div {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
 
   .shopping2.block {
     padding: 0 24px;
-  }
-
-  .shopping2.block > div {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
   }
 }
