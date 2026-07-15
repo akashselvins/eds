@@ -1,3 +1,3 @@
-export default async function decorate(block) {
+export default function decorate(block) {
   block.classList.add('shopping2-container');
 }
