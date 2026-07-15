@@ -84,53 +84,27 @@
    ========================== */
 @media (max-width: 768px) {
 
-  .texttab {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-
+  /* Keep sticky tab identical to normal mobile tab */
+  .texttab.is-fixed {
     background: #fff;
-
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-
-    /* Remove these to prevent jumping */
-    scroll-snap-type: none;
-    touch-action: auto;
-    overscroll-behavior-x: auto;
+    box-shadow: none;
+    border: none;
   }
 
-  .texttab::-webkit-scrollbar {
-    display: none;
-  }
-
-  .texttab > div {
-    flex: 0 0 170px;
-  }
-
-  .texttab > div > div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 170px;
-    padding: 14px 20px;
+  .texttab.is-fixed > div > div {
     background: transparent;
   }
 
-  .texttab > div > div.active {
+  .texttab.is-fixed > div > div.active {
     background: #e6e6e6;
   }
 
-  .texttab a,
-  .texttab p {
-    font-size: 16px;
-    white-space: nowrap;
+  .texttab.is-fixed a,
+  .texttab.is-fixed p {
     color: #202124;
   }
 
-  .texttab > div > div.active a {
+  .texttab.is-fixed > div > div.active a {
     color: #202124;
     font-weight: 700;
   }
